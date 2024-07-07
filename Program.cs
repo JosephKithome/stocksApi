@@ -1,4 +1,6 @@
 using api.Data;
+using api.interfaces;
+using api.repository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +18,9 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
         builder.Configuration.GetConnectionString("DefaultConnection"),
         new MySqlServerVersion(new Version(8, 0, 21))
         ));
+
+//Adding repositories
+builder.Services.AddScoped<IStockRepository, StockRepository>();        
 
 var app = builder.Build();
 
