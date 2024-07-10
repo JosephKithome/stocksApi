@@ -38,6 +38,14 @@ namespace api.repository
             if(!string.IsNullOrWhiteSpace(gf.Symbol)){
                 stocks = stocks.Where(st => st.Symbol.Contains(gf.Symbol));
             }
+            if(!string.IsNullOrWhiteSpace(gf.SortBy)){
+                if(gf.SortBy.Equals("symbol",StringComparison.OrdinalIgnoreCase)){
+                    stocks = (bool)gf.IsDescending ? stocks.OrderByDescending(st => st.Symbol): stocks.OrderBy(st=> st.Symbol) ;
+                }
+                if(gf.SortBy.Equals("companyName")){
+                    stocks = stocks.OrderBy(st => st.CompanyName);
+                }
+            }
             return await stocks.ToListAsync();
         }
 
