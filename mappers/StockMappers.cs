@@ -21,11 +21,13 @@ namespace api.mappers
                 Purchase = stock.Purchase,
                 LastDiv = stock.LastDiv,
                 Industry = stock.Industry,
-                MarketCap = stock.MarketCap
+                MarketCap = stock.MarketCap,
+                Comments = stock.Comments.Select(c => c.MapToCommentDto()).ToList(),
             };
         }
 
-        public static Stock ToStockFromCreateDto(this StockCreateRequestDto stockDto){
+        public static Stock ToStockFromCreateDto(this StockCreateRequestDto stockDto)
+        {
             return new Stock
             {
                 Symbol = stockDto.Symbol,
@@ -36,6 +38,6 @@ namespace api.mappers
                 MarketCap = stockDto.MarketCap
             };
         }
-        
+
     }
 }

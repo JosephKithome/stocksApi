@@ -21,44 +21,33 @@ namespace api.repository
             _context = context;
         }
 
-        public async  Task<Stock> CreateAsync(Stock stockModel)
+        public async Task<Stock> CreateAsync(Stock stockModel)
         {
-           await _context.Stock.AddAsync(stockModel);
-           await _context.SaveChangesAsync();
-           return stockModel;
-        }
-
-        public async  Task<Stock?> DeleteAsync(int id)
-        {
-            var stock = await _context.Stock.FirstOrDefaultAsync(st=> st.Id ==id);
-            if(stock ==  null){
-                return null;
-            }
-            _context.Stock.Remove(stock);
+            await _context.Stock.AddAsync(stockModel);
             await _context.SaveChangesAsync();
-            return stock;
-        
+            return stockModel;
         }
 
-        public Task<List<Stock>> GetAllAsync()
+        public async  Task<List<Stock>> GetAllAsync()
         {
-           return _context.Stock.ToListAsync();
+            return await  _context.Stock.Include(comment=> comment.Comments).ToListAsync();
         }
 
         public async Task<Stock?> GetByIdAsync(int id)
         {
-            return  await _context.Stock.FirstOrDefaultAsync(st=> st.Id==id);
-          
+            return await _context.Stock.Include(comment=> comment.Comments).FirstOrDefaultAsync(st => st.Id == id);
+
         }
 
         public async Task<Stock?> UpdateAsync(int id, StockUpdateRequestDto stockUpdateRequestDto)
         {
-           var existingStock = await _context.Stock.FirstOrDefaultAsync(st=> st.Id==id);
-           if(existingStock==null){
-            return null;
-           }
+            var existingStock = await _context.Stock.FirstOrDefaultAsync(st => st.Id == id);
+            if (existingStock == null)
+            {
+                return null;
+            }
 
-             // You can as well do the update here
+            // You can as well do the update here
             existingStock.Symbol = stockUpdateRequestDto.Symbol;
             existingStock.CompanyName = stockUpdateRequestDto.CompanyName;
             existingStock.Purchase = stockUpdateRequestDto.Purchase;
@@ -67,6 +56,25 @@ namespace api.repository
             await _context.SaveChangesAsync();
 
             return existingStock;
+        }
+
+
+        public async Task<Stock?> DeleteAsync(int id)
+        {
+            var stock = await _context.Stock.FirstOrDefaultAsync(st => st.Id == id);
+            if (stock == null)
+            {
+                return null;
+            }
+            _context.Stock.Remove(stock);
+            await _context.SaveChangesAsync();
+            return stock;
+
+        }
+
+        public Task<bool> StockExistsAsync(int id)
+        {
+            return _context.Stock.AnyAsync(s=>s.Id ==id);
         }
     }
 }
