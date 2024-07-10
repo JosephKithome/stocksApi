@@ -148,3 +148,4 @@ D:\C#. net Web Api\Finshark\api\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.
 D:\C#. net Web Api\Finshark\api\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 D:\C#. net Web Api\Finshark\api\bin\Debug\net8.0\Newtonsoft.Json.dll
 D:\C#. net Web Api\Finshark\api\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+D:\C#. net Web Api\Finshark\api\bin\Debug\net8.0\RabbitMQ.Client.dll

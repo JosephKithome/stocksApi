@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
 using api.Dtos.Stock;
+using api.helpers;
 using api.interfaces;
 using api.Models;
 using Microsoft.EntityFrameworkCore;
@@ -28,10 +29,18 @@ namespace api.repository
             return stockModel;
         }
 
-        public async  Task<List<Stock>> GetAllAsync()
+        public async  Task<List<Stock>> GetAllAsync(GenericRequestFilter gf)
         {
-            return await  _context.Stock.Include(comment=> comment.Comments).ToListAsync();
+            var stocks =  _context.Stock.Include(comment=> comment.Comments).AsQueryable();
+            if(!string.IsNullOrWhiteSpace(gf.CompanyName)){
+                stocks = stocks.Where(st => st.CompanyName.Contains(gf.CompanyName));
+            }
+            if(!string.IsNullOrWhiteSpace(gf.Symbol)){
+                stocks = stocks.Where(st => st.Symbol.Contains(gf.Symbol));
+            }
+            return await stocks.ToListAsync();
         }
+
 
         public async Task<Stock?> GetByIdAsync(int id)
         {
@@ -76,5 +85,7 @@ namespace api.repository
         {
             return _context.Stock.AnyAsync(s=>s.Id ==id);
         }
+
+    
     }
 }
