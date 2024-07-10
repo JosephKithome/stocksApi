@@ -46,7 +46,9 @@ namespace api.repository
                     stocks = stocks.OrderBy(st => st.CompanyName);
                 }
             }
-            return await stocks.ToListAsync();
+            var skipNumber = (gf.Page-1) * gf.ItemsPerPage;
+
+            return await stocks.Skip((int)skipNumber).Take((int)gf.ItemsPerPage).ToListAsync();
         }
 
 
