@@ -32,6 +32,7 @@ namespace api.repository
         public async  Task<List<Stock>> GetAllAsync(GenericRequestFilter gf)
         {
             var stocks =  _context.Stock.Include(comment=> comment.Comments).AsQueryable();
+            
             if(!string.IsNullOrWhiteSpace(gf.CompanyName)){
                 stocks = stocks.Where(st => st.CompanyName.Contains(gf.CompanyName));
             }

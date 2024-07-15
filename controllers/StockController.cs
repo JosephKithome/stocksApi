@@ -7,6 +7,7 @@ using api.Dtos.Stock;
 using api.helpers;
 using api.interfaces;
 using api.mappers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,6 +30,7 @@ namespace api.controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async  Task<IActionResult> GetAll([FromQuery] GenericRequestFilter gf)
         {
             var stocks = await  _stockRepository.GetAllAsync(gf);
